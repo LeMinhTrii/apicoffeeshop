@@ -6,5 +6,6 @@ module.exports = (app) => {
         .route("/product/:id")
         .get(ProductControler.detail)
         .put(ProductControler.update)
+        .patch(ProductControler.update)
         .delete(ProductControler.delete);
 };
