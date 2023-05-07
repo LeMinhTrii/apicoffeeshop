@@ -14,7 +14,17 @@ app.use(
 );
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use(function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://node-brown-chi.vercel.app/"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 // tăng giới hạn kích thước dữ liệu cho form-data
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
