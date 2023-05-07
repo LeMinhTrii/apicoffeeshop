@@ -36,7 +36,7 @@ const productController = {
     //     return res.status(422).json({ msg: "Invalid Images" });
     // if (fileSize > 5000000)
     //     return res.status(422).json({ msg: "Image must be less than 5MB" });
-    file.mv(`./public/images/${fileName}`, async (err) => {
+    file.mv(path.join(__dirname, "public", "images", fileName), async (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       let sql = "INSERT INTO product SET ?";
       const product = {
