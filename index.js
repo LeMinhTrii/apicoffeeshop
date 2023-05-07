@@ -7,7 +7,7 @@ require("dotenv").config;
 const productRoute = require("./routes/product.route");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(fileUpload());
+// app.use(fileUpload());
 
 // Cấu hình express-fileupload
 app.use(
