@@ -36,7 +36,7 @@ const productController = {
     //     return res.status(422).json({ msg: "Invalid Images" });
     // if (fileSize > 5000000)
     //     return res.status(422).json({ msg: "Image must be less than 5MB" });
-    file.mv(`./public/images/${fileName}`, (err) => {
+    file.mv(`public/images/${fileName}`, (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       let sql = "INSERT INTO product SET ?";
       const product = {
@@ -58,7 +58,7 @@ const productController = {
         return res.json({ message: "Id exits" });
       } else {
         const src = response[0].image;
-        const filepath = `./public/images/${src}`;
+        const filepath = `public/images/${src}`;
         fs.unlinkSync(filepath);
         let sql2 = "DELETE FROM product WHERE id = ?";
         db.query(sql2, [req.params.id], (err, response) => {
@@ -83,8 +83,8 @@ const productController = {
           const file = req.files.file;
           const ext = path.extname(file.name);
           fileName = file.md5 + ext;
-          fs.unlinkSync(`./public/images/${response[0].image}`);
-          file.mv(`./public/images/${fileName}`, (err) => {
+          fs.unlinkSync(`public/images/${response[0].image}`);
+          file.mv(`public/images/${fileName}`, (err) => {
             if (err) return res.status(500).json({ msg: err.message });
           });
         }
