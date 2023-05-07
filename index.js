@@ -7,10 +7,10 @@ const productRoute = require("./routes/product.route");
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // thay localhost:3000 bằng tên miền của ứng dụng của bạn
+    origin: "https://node-brown-chi.vercel.app/", // Thay đổi tên miền của ứng dụng của bạn
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
