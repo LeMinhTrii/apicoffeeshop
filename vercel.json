@@ -5,7 +5,13 @@
         "use": "@vercel/node"
     }],
     "routes": [{
-        "src": "/(.*)",
-        "dest": "/"
-    }]
+            "src": "/public/images",
+            "methods": ["POST"],
+            "dest": "routes/product.route.js"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
+    ]
 }
