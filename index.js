@@ -9,6 +9,7 @@ app.use(
   cors({
     origin: "https://node-brown-chi.vercel.app/", // Thay đổi tên miền của ứng dụng của bạn
     allowedHeaders: ["Content-Type", "Authorization"],
+    methods: "GET,PUT,POST,DELETE",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
