@@ -1,11 +1,14 @@
-module.exports = (app) => {
-    const ProductControler = require("../controllers/ProductControler");
-    app.route("/product").get(ProductControler.get).post(ProductControler.store);
+const express = require("express");
+const ProductControler = require("../controllers/ProductControler");
+const uploadCloud = require("../middlewares/uploader");
+const router = express.Router();
+router.get("/product", ProductControler.get);
+router.post("/product", uploadCloud.single("file"), ProductControler.store);
 
-    app
-        .route("/product/:id")
-        .get(ProductControler.detail)
-        .put(ProductControler.update)
-        .patch(ProductControler.update)
-        .delete(ProductControler.delete);
-};
+// app
+//     .route("/product/:id")
+//     .get(ProductControler.detail)
+//     .put(ProductControler.update)
+//     .patch(ProductControler.update)
+//     .delete(ProductControler.delete);
+module.exports = router;

@@ -1,9 +1,8 @@
-"use strict";
-const util = require("util");
 const db = require("../database/db");
 const mysql = require("mysql2");
 const path = require("path");
 const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
 const productController = {
   get: (req, res) => {
     let sql = "SELECT * FROM product";
@@ -19,36 +18,23 @@ const productController = {
       res.json(response[0]);
     });
   },
-  store: (req, res) => {
-    if (req.files == null)
-      return res.status(400).json({ msg: "No File Uploaded" });
+  store: async (req, res) => {
     const { name, price } = req.body;
-    const file = req.files.file;
-    // lấy ra kích thước của file
-    // const fileSize = file.data.length;
-    const ext = path.extname(file.name);
-    const fileName = file.md5 + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
-    // Cho phép File
-    // const allowedType = [".png", ".jpg", ".jpeg"];
-    // Check File
-    // if (!allowedType.includes(ext.toLowerCase()))
-    //     return res.status(422).json({ msg: "Invalid Images" });
-    // if (fileSize > 5000000)
-    //     return res.status(422).json({ msg: "Image must be less than 5MB" });
-    file.mv(path.join(__dirname, "public", "images", fileName), async (err) => {
-      if (err) return res.status(500).json({ msg: err.message });
-      let sql = "INSERT INTO product SET ?";
-      const product = {
-        name,
-        price,
-        image: fileName,
-        urlThumnail: url,
-      };
-      db.query(sql, product, (err, response) => {
-        if (err) return res.status(500).json({ msg: err.message });
-        res.json({ message: "Insert success!" });
-      });
+    const fileData = req.file;
+    let sql = "INSERT INTO product SET ?";
+    const product = {
+      name,
+      price,
+      image: fileData.path,
+      urlThumnail: fileData,
+    };
+    db.query(sql, product, (err, response) => {
+      if (err) {
+        if (fileData) cloudinary.uploader.destroy(fileData.filename);
+        return res.status(500).json({ msg: err.message });
+      }
+
+      res.json({ message: "Insert success!" });
     });
   },
   delete: (req, res) => {
