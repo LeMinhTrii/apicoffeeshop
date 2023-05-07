@@ -20,7 +20,7 @@
         "cors": "^2.8.5",
         "express-fileupload": "^1.4.0",
         "mysql": "^2.18.1",
-        "sequelize": "^6.31.1"
+        "sequelize": "^6.31.1",
+        "yarn": "^1.22.19"
     }
-
 }
