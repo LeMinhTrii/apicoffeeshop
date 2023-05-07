@@ -5,7 +5,7 @@
         "use": "@vercel/node"
     }],
     "routes": [{
-            "src": "/public/images",
+            "src": "/api/upload",
             "methods": ["POST"],
             "dest": "routes/product.route.js"
         },
