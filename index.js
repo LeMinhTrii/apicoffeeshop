@@ -5,16 +5,20 @@ const cors = require("cors");
 require("dotenv").config();
 const productRoute = require("./routes/product.route");
 
+// cors
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://127.0.0.1:3000");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
+// bật cors toàn bộ resquest
+app.use(cors());
+//
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 // tăng giới hạn kích thước dữ liệu cho form-data
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
