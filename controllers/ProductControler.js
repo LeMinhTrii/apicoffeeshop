@@ -27,22 +27,22 @@ const productController = {
     });
   },
   store: async (req, res) => {
-    const { name, price } = req.body;
+    const { name, description, price, discount, category_id } = req.body;
     const fileData = req.file;
     let sql = "INSERT INTO products SET ?";
     const product = {
       name,
-      price,
+      description,
+      price: parseInt(price),
+      discount: parseInt(discount),
+      category_id: parseInt(category_id),
       image: fileData.filename,
       urlThumnail: fileData.path,
     };
     db.query(sql, product, (err, response) => {
       if (err) {
         if (fileData) cloudinary.uploader.destroy(fileData.filename);
-        return res.status(422).json({
-          message:
-            "Unprocessable Entity - Dữ liệu của bạn gửi lên không hợp lệ hoặc bị lỗi.",
-        });
+        return res.status(422).json(err.message);
       }
       res.status(201).json({
         message:
@@ -50,6 +50,7 @@ const productController = {
       });
     });
   },
+
   delete: (req, res) => {
     let sql = "SELECT * FROM products WHERE id = ?";
     let id = req.params.id;
@@ -73,7 +74,7 @@ const productController = {
     });
   },
   update: (req, res) => {
-    const { name, price } = req.body;
+    const { name, description, price, discount, category_id } = req.body;
     const sql = "SELECT * FROM products WHERE id = ?";
     const fileData = req.file;
     const id = req.params.id;
@@ -96,7 +97,10 @@ const productController = {
         }
         const product = {
           name,
-          price,
+          description,
+          price: parseInt(price),
+          discount: parseInt(discount),
+          category_id: parseInt(category_id),
           image: fileName,
           urlThumnail: filePath,
         };
