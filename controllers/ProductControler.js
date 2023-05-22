@@ -17,7 +17,6 @@ const productController = {
         count: response.length,
         totalPage: Math.ceil(response.length / 8),
         perpage: 8,
-        curentPage: 1,
       };
       res.status(200).json(data);
     });
