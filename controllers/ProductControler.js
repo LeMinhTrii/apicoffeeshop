@@ -1,3 +1,4 @@
+const { response } = require("express");
 const db = require("../database/db");
 const mysql = require("mysql2");
 const cloudinary = require("cloudinary").v2;
@@ -11,7 +12,13 @@ const productController = {
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
         });
       }
-      res.status(200).json(response);
+      const data = {
+        product: response,
+        count: response.length,
+        totalPage: Math.ceil(response.length / 8),
+        perpage: 8,
+      };
+      res.status(200).json(data);
     });
   },
   detail: (req, res) => {
@@ -26,7 +33,7 @@ const productController = {
       res.status(200).json(response[0]);
     });
   },
-  store: async (req, res) => {
+  store: (req, res) => {
     const { name, description, price, discount, category_id } = req.body;
     const fileData = req.file;
     let sql = "INSERT INTO products SET ?";
@@ -50,7 +57,6 @@ const productController = {
       });
     });
   },
-
   delete: (req, res) => {
     let sql = "SELECT * FROM products WHERE id = ?";
     let id = req.params.id;
@@ -119,6 +125,38 @@ const productController = {
           }
         );
       }
+    });
+  },
+  getProductDesc: (req, res) => {
+    let sql = "SELECT * FROM products ORDER BY id DESC";
+    db.query(sql, (err, response) => {
+      if (Object.entries(response).length === 0 || err) {
+        res.status(404).json({
+          message:
+            "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
+        });
+      }
+      res.status(200).json(response);
+    });
+  },
+  getSearch: (req, res) => {
+    let sql = "SELECT * FROM products WHERE Lower(name) Like Lower(?)";
+    let search = `%${req.body.keyword}%`;
+    db.query(sql, search, (err, response) => {
+      if (err) res.status(404).json(err.message);
+      res.status(200).json(response);
+    });
+  },
+  getProductByCategoryById: (req, res) => {
+    let sql = "SELECT * FROM products WHERE category_id = ?";
+    db.query(sql, req.params.id, (err, response) => {
+      if (response.length === 0 || err) {
+        res.status(404).json({
+          message:
+            "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
+        });
+      }
+      res.status(200).json(response);
     });
   },
 };

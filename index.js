@@ -4,6 +4,15 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const productRoute = require("./routes/product.route");
+const userRoute = require("./routes/user.route");
+const categoryRoute = require("./routes/category.route");
+const multer = require("multer");
+
+// Cấu hình multer
+// const upload = multer();
+
+// Sử dụng multer cho các yêu cầu có Content-Type là form-data
+// app.use(upload.any());
 
 // cors
 app.use((req, res, next) => {
@@ -26,6 +35,8 @@ app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 // call route
 app.use("/api/v1", productRoute);
+app.use("/api/v1", userRoute);
+app.use("/api/v1", categoryRoute);
 
 // port
 const PORT = process.env.PORT || 3000;
