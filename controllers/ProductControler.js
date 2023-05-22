@@ -12,13 +12,13 @@ const productController = {
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
         });
       }
-      // const data = {
-      //   product: response,
-      //   count: response.length,
-      //   totalPage: Math.ceil(response.length / 8),
-      //   perpage: 8,
-      // };
-      res.status(200).json(response);
+      const data = {
+        product: response,
+        count: response.length,
+        totalPage: Math.ceil(response.length / 8),
+        perpage: 8,
+      };
+      res.status(200).json(data);
     });
   },
   detail: (req, res) => {
