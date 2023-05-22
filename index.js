@@ -6,7 +6,7 @@ require("dotenv").config();
 const productRoute = require("./routes/product.route");
 const userRoute = require("./routes/user.route");
 const categoryRoute = require("./routes/category.route");
-const multer = require("multer");
+// const multer = require("multer");
 
 // Cấu hình multer
 // const upload = multer();
