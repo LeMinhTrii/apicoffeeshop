@@ -6,13 +6,13 @@ require("dotenv").config();
 const productRoute = require("./routes/product.route");
 const userRoute = require("./routes/user.route");
 const categoryRoute = require("./routes/category.route");
-// const multer = require("multer");
+const multer = require("multer");
 
 // Cấu hình multer
-// const upload = multer();
+const upload = multer();
 
 // Sử dụng multer cho các yêu cầu có Content-Type là form-data
-// app.use(upload.any());
+app.use(upload.any());
 
 // cors
 app.use((req, res, next) => {

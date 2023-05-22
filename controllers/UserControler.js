@@ -1,5 +1,6 @@
+const { response } = require("express");
 const db = require("../database/db");
-const bcrypt = require("bcrypt");
+const { hash, compare } = require("../hashpass/hash");
 const cloudinary = require("cloudinary").v2;
 
 const sql = {
@@ -13,6 +14,7 @@ const sql = {
     insertCoverImage: "INSERT INTO coverimage SET ?",
     deleteCoverImage: "DELETE FROM coverimage WHERE id = ?",
     updateCoverImageById: "UPDATE coverimage SET ? WHERE id = ?",
+    updatePasswordById: "UPDATE users SET ? WHERE id= ?",
 };
 const userController = {
     get: (req, res) => {
@@ -32,28 +34,29 @@ const userController = {
                 if (response.length !== 0) {
                     res.status(404).json({ message: "Tài khoản đã được đăng ký" });
                 } else {
-                    bcrypt
-                        .hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
-                        .then((hashed) => {
-                            const user = {
-                                name,
-                                phone_number,
-                                email,
-                                password: hashed,
-                            };
-                            db.query(sql.insertUser, user, (err, response) => {
-                                if (err) res.status(422).json(err.message);
-                                db.query(
-                                    sql.insertCoverImage, { filename: null, filepath: null },
-                                    (err, response) => {
-                                        if (err) res.json("Thêm Khum Được");
-                                    }
-                                );
-                                res.status(201).json({
-                                    message: "Created - Tài nguyên, đối tượng dữ liệu đã được tạo thành công.",
-                                });
-                            });
+                    const hashed = hash(password);
+                    // bcrypt
+                    //     .hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
+                    //     .then((hashed) => {
+                    const user = {
+                        name,
+                        phone_number,
+                        email,
+                        password: hashed,
+                    };
+                    db.query(sql.insertUser, user, (err, response) => {
+                        if (err) res.status(422).json(err.message);
+                        db.query(
+                            sql.insertCoverImage, { filename: null, filepath: null },
+                            (err, response) => {
+                                if (err) res.json("Thêm Khum Được");
+                            }
+                        );
+                        res.status(201).json({
+                            message: "Created - Tài nguyên, đối tượng dữ liệu đã được tạo thành công.",
                         });
+                    });
+                    // });
                 }
             });
         } else {
@@ -63,16 +66,48 @@ const userController = {
     login: (req, res) => {
         const { email, password } = req.body;
         db.query(sql.getUserByEmail, email, (err, response) => {
-            if (response.length !== 0) {
-                bcrypt.compare(password, response[0].password, (err, result) => {
-                    if (result) {
-                        res.status(200).json({ message: "Đăng nhập thành công" });
-                    } else {
-                        res.status(404).json({ message: "Sai mật khẩu" });
-                    }
-                });
+            if (Object.entries(response).length !== 0) {
+                const passNew = hash(password);
+                const result = compare(passNew, response[0].password);
+                if (result) {
+                    res.status(200).json({ message: "Đăng nhập thành công" });
+                } else {
+                    res.status(404).json({ message: "Sai mật khẩu" });
+                }
             } else {
                 res.status(404).json({ message: "Tài khoản chưa được đăng ký" });
+            }
+        });
+    },
+    updatePassword: (req, res) => {
+        const { passOld, passNewComfirm } = req.body;
+        const id = req.params.id;
+        db.query(sql.getUserById, id, (err, response) => {
+            if (err) res.status(404).json({ message: "Không Tìm Thấy Tài Khoản" });
+            else {
+                const passNew = hash(passOld);
+                const result = compare(passNew, response[0].password);
+                if (result) {
+                    if (req.body.passNew === passNewComfirm) {
+                        const pass = {
+                            password: hash(passNew),
+                        };
+                        db.query(sql.updatePasswordById, [pass, id], (err, response) => {
+                            if (err)
+                                res.status(404).json({
+                                    message: "Cập nhật mật khẩu không thành công",
+                                });
+                            else
+                                res.status(200).json({
+                                    message: "Cập nhật mật khẩu thành công",
+                                });
+                        });
+                    } else {
+                        res.status(404).json({ message: "Mật khẩu mới không khớp" });
+                    }
+                } else {
+                    res.status(404).json({ message: "Mật Khẩu Cũ Sai" });
+                }
             }
         });
     },
