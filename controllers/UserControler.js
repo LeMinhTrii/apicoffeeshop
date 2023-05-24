@@ -78,13 +78,16 @@ const userController = {
     }
   },
   login: (req, res) => {
+    console.log(req.body);
     const { email, password } = req.body;
     db.query(sql.getUserByEmail, email, (err, response) => {
       if (Object.entries(response).length !== 0) {
         const passNew = hash(password);
         const result = compare(passNew, response[0].password);
         if (result) {
-          res.status(200).json({ message: "Đăng nhập thành công" });
+          res
+            .status(200)
+            .json({ message: "Đăng nhập thành công", data: response });
         } else {
           res.status(404).json({ message: "Sai mật khẩu" });
         }
