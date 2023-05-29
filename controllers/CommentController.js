@@ -4,12 +4,12 @@ const commentController = {
     let sql = "SELECT * FROM comments WHERE product_id = ?";
     db.query(sql, req.params.id, (err, response) => {
       if (Object.entries(response).length === 0 || err) {
-        return res.status(404).json({
+        res.status(404).json({
           message:
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
         });
       }
-      return res.status(200).json(response);
+      res.status(200).json(response);
     });
   },
   post: (req, res) => {
