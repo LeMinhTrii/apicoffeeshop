@@ -3,7 +3,7 @@ const commentController = {
   get: (req, res) => {
     let sql = "SELECT * FROM comments WHERE product_id = ?";
     db.query(sql, req.params.id, (err, response) => {
-      if (Object.entries(response).length === 0 || err) {
+      if (err) {
         res.status(404).json({
           message:
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
@@ -15,7 +15,7 @@ const commentController = {
   countcomment: (req, res) => {
     let sql = "SELECT COUNT(*) FROM comments WHERE product_id = ?";
     db.query(sql, req.params.id, (err, response) => {
-      if (Object.entries(response).length === 0 || err) {
+      if (err) {
         res.status(404).json({
           message:
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
