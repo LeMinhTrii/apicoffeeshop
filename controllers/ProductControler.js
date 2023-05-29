@@ -14,8 +14,8 @@ const productController = {
       }
       const data = {
         product: response,
-        count: response.length || 0,
-        totalPage: Math.ceil(response.length / 8),
+        count: Object.entries(response).length,
+        totalPage: Math.ceil(Object.entries(response).length / 8),
         perpage: 8,
       };
       res.status(200).json(data);
