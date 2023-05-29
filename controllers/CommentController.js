@@ -9,7 +9,7 @@ const commentController = {
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
         });
       }
-      res.status(200).json(response);
+      return res.status(200).json(response);
     });
   },
   post: (req, res) => {
