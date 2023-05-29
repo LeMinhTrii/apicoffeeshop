@@ -6,7 +6,7 @@ const productController = {
   get: (req, res) => {
     let sql = "SELECT * FROM products";
     db.query(sql, (err, response) => {
-      if (Object.entries(response).length === 0 || err) {
+      if (response.length === 0 || err) {
         res.status(404).json({
           message:
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
