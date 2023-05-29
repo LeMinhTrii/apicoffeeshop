@@ -6,6 +6,7 @@ require("dotenv").config();
 const productRoute = require("./routes/product.route");
 const userRoute = require("./routes/user.route");
 const categoryRoute = require("./routes/category.route");
+const commentRoute = require("./routes/comment.route");
 // const multer = require("multer");
 
 // Cấu hình multer
@@ -37,6 +38,7 @@ app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use("/api/v1", productRoute);
 app.use("/api/v1", userRoute);
 app.use("/api/v1", categoryRoute);
+app.use("/api/v1", commentRoute);
 
 // port
 const PORT = process.env.PORT || 3000;
