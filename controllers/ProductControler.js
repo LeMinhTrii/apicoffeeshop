@@ -130,7 +130,7 @@ const productController = {
   getProductDesc: (req, res) => {
     let sql = "SELECT * FROM products ORDER BY id DESC";
     db.query(sql, (err, response) => {
-      if (Object.entries(response).length === 0 || err) {
+      if (err) {
         res.status(404).json({
           message:
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
@@ -150,7 +150,7 @@ const productController = {
   getProductByCategoryById: (req, res) => {
     let sql = "SELECT * FROM products WHERE category_id = ?";
     db.query(sql, req.params.id, (err, response) => {
-      if (response.length === 0 || err) {
+      if (err) {
         res.status(404).json({
           message:
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
