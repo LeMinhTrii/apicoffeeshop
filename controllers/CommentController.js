@@ -12,7 +12,7 @@ const commentController = {
       res.status(200).json(response);
     });
   },
-  countComment: (req, res) => {
+  countcomment: (req, res) => {
     let sql = "SELECT COUNT(*) FROM comments WHERE product_id = ?";
     db.query(sql, req.params.id, (err, response) => {
       if (Object.entries(response).length === 0 || err) {
