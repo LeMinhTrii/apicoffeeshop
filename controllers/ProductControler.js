@@ -193,7 +193,7 @@ const productController = {
           }
         });
       } else {
-        res.json({
+        res.status(404).json({
           message: "Sản Phẩm Đã Có Trong Danh Sách Yêu Thích",
         });
         // db.query(delWishlist, response[0].id, (err, response) => {
@@ -215,11 +215,9 @@ const productController = {
           (err, response) => {
             if (err) res.status(404).json(err.message);
             else {
-              res
-                .status(200)
-                .json({
-                  message: "Bỏ Sản Phẩm Ra Danh Sách Yêu Thích Thành Công",
-                });
+              res.status(200).json({
+                message: "Bỏ Sản Phẩm Ra Danh Sách Yêu Thích Thành Công",
+              });
             }
           }
         );
