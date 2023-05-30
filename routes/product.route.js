@@ -16,4 +16,8 @@ router.delete("/product/:id", ProductControler.delete);
 router.get("/productdesc", ProductControler.getProductDesc);
 router.get("/productcategory/:id", ProductControler.getProductByCategoryById);
 router.post("/search", ProductControler.getSearch);
+//
+router.get("/wishlist/:id", ProductControler.getWishListByUserId);
+router.post("/wishlist", ProductControler.postWishList);
+router.delete("/wishlist/:id", ProductControler.deleteWishList);
 module.exports = router;

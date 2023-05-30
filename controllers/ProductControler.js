@@ -159,5 +159,65 @@ const productController = {
       res.status(200).json(response);
     });
   },
+  // Get WishList Product By User Id
+  getWishListByUserId: (req, res) => {
+    let sql =
+      "SELECT * FROM wishlists w JOIN products p ON w.product_id = p.id WHERE w.user_id = ?";
+    db.query(sql, req.params.id, (err, response) => {
+      if (err)
+        res.status(404).json({
+          message:
+            "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
+        });
+      res.status(200).json(response);
+    });
+  },
+  postWishList: (req, res) => {
+    const { user_id, product_id } = req.body;
+    let checksql =
+      "SELECT * FROM wishlists WHERE user_id = ? AND product_id = ?";
+    let delWishlist = "DELETE FROM wishlists WHERE id = ?";
+    db.query(checksql, [user_id, product_id], (err, response) => {
+      if (!response[0]) {
+        const wishlist = {
+          user_id,
+          product_id,
+        };
+        db.query("INSERT INTO wishlists SET ?", wishlist, (err, response) => {
+          if (err) {
+            return res.status(404).json(err.message);
+          } else {
+            return res.status(200).json({ message: "Thêm Thành Công" });
+          }
+        });
+      } else {
+        db.query(delWishlist, response[0].id, (err, response) => {
+          if (err) res.status(404).json({ message: "Xóa Không Thành Công" });
+          else {
+            res.status(200).json({ message: "Xóa Thành Công" });
+          }
+        });
+      }
+    });
+  },
+  deleteWishList: (req, res) => {
+    const sql = "SELECT * FROM wishlists WHERE product_id= ?";
+    db.query(sql, req.params.id, (err, response) => {
+      if (response[0]) {
+        db.query(
+          "DELETE FROM wishlists WHERE id = ?",
+          response[0].id,
+          (err, response) => {
+            if (err) res.status(404).json(err.message);
+            else {
+              res.status(200).json({ message: "Xóa Thành Công" });
+            }
+          }
+        );
+      } else {
+        req.status(404).json({ message: "Tài Nguyên Không Tồn Tại" });
+      }
+    });
+  },
 };
 module.exports = productController;
