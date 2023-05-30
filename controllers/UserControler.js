@@ -102,12 +102,13 @@ const userController = {
     db.query(sql.getUserById, id, (err, response) => {
       if (err) res.status(404).json({ message: "Không Tìm Thấy Tài Khoản" });
       else {
+        // console.log(passNewComfirm);
         const passNew = hash(passOld);
         const result = compare(passNew, response[0].password);
         if (result) {
           if (req.body.passNew === passNewComfirm) {
             const pass = {
-              password: hash(passNew),
+              password: hash(passNewComfirm),
             };
             db.query(sql.updatePasswordById, [pass, id], (err, response) => {
               if (err)

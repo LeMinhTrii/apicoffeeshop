@@ -12,18 +12,7 @@ const commentController = {
       res.status(200).json(response);
     });
   },
-  countcomment: (req, res) => {
-    let sql = "SELECT COUNT(*) FROM comments WHERE product_id = ?";
-    db.query(sql, req.params.id, (err, response) => {
-      if (err) {
-        res.status(404).json({
-          message:
-            "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
-        });
-      }
-      res.status(200).json(response);
-    });
-  },
+
   post: (req, res) => {
     const { user_id, product_id, content } = req.body;
     const comment = {
