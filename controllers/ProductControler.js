@@ -187,16 +187,21 @@ const productController = {
           if (err) {
             return res.status(404).json(err.message);
           } else {
-            return res.status(200).json({ message: "Thêm Thành Công" });
+            return res
+              .status(200)
+              .json({ message: "Sản Phẩm Đã Được Thêm Danh Sách Yêu Thích" });
           }
         });
       } else {
-        db.query(delWishlist, response[0].id, (err, response) => {
-          if (err) res.status(404).json({ message: "Xóa Không Thành Công" });
-          else {
-            res.status(200).json({ message: "Xóa Thành Công" });
-          }
+        res.json({
+          message: "Sản Phẩm Đã Có Trong Danh Sách Yêu Thích",
         });
+        // db.query(delWishlist, response[0].id, (err, response) => {
+        //   if (err) res.status(404).json({ message: "Xóa Không Thành Công" });
+        //   else {
+        //     res.status(200).json({ message: "Xóa Thành Công" });
+        //   }
+        // });
       }
     });
   },
@@ -210,7 +215,11 @@ const productController = {
           (err, response) => {
             if (err) res.status(404).json(err.message);
             else {
-              res.status(200).json({ message: "Xóa Thành Công" });
+              res
+                .status(200)
+                .json({
+                  message: "Bỏ Sản Phẩm Ra Danh Sách Yêu Thích Thành Công",
+                });
             }
           }
         );
