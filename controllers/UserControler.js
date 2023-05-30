@@ -152,7 +152,7 @@ const userController = {
               res.status(404).json({ message: "Cập Nhật Tài Khoản Thất Bại" });
             else
               res
-                .status(404)
+                .status(201)
                 .json({ message: "Cập Nhật Tài Khoản Thành Công" });
           })
         );
