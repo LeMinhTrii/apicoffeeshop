@@ -1,4 +1,3 @@
-const { response } = require("express");
 const db = require("../database/db");
 const cloudinary = require("cloudinary").v2;
 
@@ -8,6 +7,14 @@ const sql = {
   postCategory: "INSERT INTO categories SET ?",
   deleteCategoryById: "DELETE FROM categories WHERE id = ?",
   updateCategoryById: "UPDATE categories SET ? WHERE id = ?",
+  getProductOrderByPriceDesc:
+    "SELECT * FROM products WHERE category_id = ? ORDER BY price DESC LIMIT ?, ?",
+  getProductOrderByPriceAsc:
+    "SELECT * FROM products WHERE category_id = ? ORDER BY price ASC LIMIT ?, ?",
+  getProductOrderByIdDesc:
+    "SELECT * FROM products WHERE category_id = ? ORDER BY id DESC LIMIT ?, ?",
+  getProductOrderByIdAsc:
+    "SELECT * FROM products WHERE category_id = ? ORDER BY id ASC LIMIT ?, ?",
 };
 const caterogyController = {
   get: (req, res) => {
@@ -100,6 +107,72 @@ const caterogyController = {
         });
       }
     });
+  },
+  getProductPriceDesc: (req, res) => {
+    const { page, perpage } = req.body;
+    let start = (page - 1) * perpage;
+    db.query(
+      sql.getProductOrderByPriceDesc,
+      [req.params.id, start, perpage],
+      (err, response) => {
+        if (err) {
+          res.status(404).json(err.message);
+          console.log(response);
+        }
+        res.status(200).json(response);
+      }
+    );
+  },
+  getProductPriceAsc: (req, res) => {
+    const { page, perpage } = req.body;
+    let start = (page - 1) * perpage;
+    db.query(
+      sql.getProductOrderByPriceAsc,
+      [req.params.id, start, perpage],
+      (err, response) => {
+        if (response.length === 0 || err) {
+          res.status(404).json({
+            message:
+              "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
+          });
+        }
+        res.status(200).json(response);
+      }
+    );
+  },
+  getProductIdDesc: (req, res) => {
+    const { page, perpage } = req.body;
+    let start = (page - 1) * perpage;
+    db.query(
+      sql.getProductOrderByIdDesc,
+      [req.params.id, start, perpage],
+      (err, response) => {
+        if (response.length === 0 || err) {
+          res.status(404).json({
+            message:
+              "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
+          });
+        }
+        res.status(200).json(response);
+      }
+    );
+  },
+  getProductIdAsc: (req, res) => {
+    const { page, perpage } = req.body;
+    let start = (page - 1) * perpage;
+    db.query(
+      sql.getProductOrderByIdAsc,
+      [req.params.id, start, perpage],
+      (err, response) => {
+        if (response.length === 0 || err) {
+          res.status(404).json({
+            message:
+              "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
+          });
+        }
+        res.status(200).json(response);
+      }
+    );
   },
 };
 module.exports = caterogyController;
