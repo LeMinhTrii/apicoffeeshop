@@ -8,9 +8,9 @@ const sql = {
   deleteCategoryById: "DELETE FROM categories WHERE id = ?",
   updateCategoryById: "UPDATE categories SET ? WHERE id = ?",
   getProductOrderByPriceDesc:
-    "SELECT * FROM products WHERE category_id = ? ORDER BY price DESC LIMIT ?, ?",
+    "SELECT * FROM products WHERE category_id = ? ORDER BY (price-price*discount/100) DESC LIMIT ?, ?",
   getProductOrderByPriceAsc:
-    "SELECT * FROM products WHERE category_id = ? ORDER BY price ASC LIMIT ?, ?",
+    "SELECT * FROM products WHERE category_id = ? ORDER BY (price-price*discount/100) ASC LIMIT ?, ?",
   getProductOrderByIdDesc:
     "SELECT * FROM products WHERE category_id = ? ORDER BY id DESC LIMIT ?, ?",
   getProductOrderByIdAsc:
