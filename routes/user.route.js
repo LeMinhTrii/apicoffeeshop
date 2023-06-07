@@ -29,6 +29,8 @@ router.patch(
   upload.single("file"),
   UserController.updateCoverImage
 );
+router.get("/coverimage/:id", UserController.getCoverImage);
+
 router.put("/changepass/:id", UserController.updatePassword);
 router.patch("/changepass/:id", UserController.updatePassword);
 router.post("/register", UserController.register);

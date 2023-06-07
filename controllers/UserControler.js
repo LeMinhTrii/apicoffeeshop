@@ -28,6 +28,17 @@ const userController = {
       res.status(200).json(response);
     });
   },
+  getCoverImage: (req, res) => {
+    db.query(sql.getCoverImageById, req.params.id, (err, response) => {
+      if (err) {
+        res.status(404).json({
+          message:
+            "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
+        });
+      }
+      res.status(200).json(response);
+    });
+  },
   getUserById: (req, res) => {
     db.query(sql.getUserById, req.params.id, (err, response) => {
       if (Object.entries(response).length === 0 || err) {
