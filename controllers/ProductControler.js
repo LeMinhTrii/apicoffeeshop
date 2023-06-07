@@ -61,7 +61,7 @@ const productController = {
     let sql = "SELECT * FROM products WHERE id = ?";
     let id = req.params.id;
     db.query(sql, id, (err, response) => {
-      if (Object.entries(response).length === 0) {
+      if (err) {
         res.status(404).json({
           message:
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
@@ -85,7 +85,7 @@ const productController = {
     const fileData = req.file;
     const id = req.params.id;
     db.query(sql, id, (err, response) => {
-      if (Object.entries(response).length === 0) {
+      if (err) {
         res.status(404).json({
           message:
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
