@@ -2,6 +2,7 @@ const db = require("../database/db");
 
 const sql = {
   getAllOrder: "SELECT * FROM orders",
+  getOrderByIds: "SELECT * FROM orders WHERE id = ?",
   getOrderByUserId: "SELECT * FROM orders WHERE user_id = ?  ORDER BY id DESC",
   postOrderByUserId: "INSERT INTO orders SET ?",
   updateOrder: "UPDATE orders SET ? WHERE id = ?",
@@ -85,6 +86,17 @@ const userController = {
           });
         });
       }
+    });
+  },
+  getOrderByIdOrder: (req, res) => {
+    db.query(sql.getOrderByIds, req.params.id, (err, response) => {
+      if (Object.entries(response).length === 0 || err) {
+        res.status(404).json({
+          message:
+            "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
+        });
+      }
+      res.status(200).json(response);
     });
   },
 };
