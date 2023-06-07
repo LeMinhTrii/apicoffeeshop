@@ -90,13 +90,10 @@ const userController = {
   },
   getOrderByIdOrder: (req, res) => {
     db.query(sql.getOrderByIds, req.params.id, (err, response) => {
-      if (Object.entries(response).length === 0 || err) {
-        res.status(404).json({
-          message:
-            "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
-        });
+      if (err) {
+        res.status(404).json(err.message);
       }
-      res.status(200).json(response);
+      res.status(200).json(response[0]);
     });
   },
 };
