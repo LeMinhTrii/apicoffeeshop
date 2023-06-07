@@ -2,7 +2,7 @@ const db = require("../database/db");
 
 const sql = {
   getAllOrder: "SELECT * FROM orders",
-  getOrderByIds: "SELECT * FROM orders WHERE id = ?",
+  getOrderByIdOrder: "SELECT * FROM orders WHERE id = ?",
   getOrderByUserId: "SELECT * FROM orders WHERE user_id = ?  ORDER BY id DESC",
   postOrderByUserId: "INSERT INTO orders SET ?",
   updateOrder: "UPDATE orders SET ? WHERE id = ?",
@@ -89,7 +89,7 @@ const userController = {
     });
   },
   getOrderByIdOrder: (req, res) => {
-    db.query(sql.getOrderByIds, req.params.id, (err, response) => {
+    db.query(sql.getOrderByIdOrder, req.params.id, (err, response) => {
       if (err) {
         res.status(404).json(err.message);
       }
