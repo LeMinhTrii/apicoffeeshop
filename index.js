@@ -27,10 +27,10 @@ app.use((req, res, next) => {
   next();
 });
 // bật cors toàn bộ resquest
-const corsOptions={
-  origin:"*",
-  optionsSuccessStatus:200
-}
+const corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200,
+};
 app.use(cors(corsOptions));
 //
 app.use(express.urlencoded({ extended: false }));
