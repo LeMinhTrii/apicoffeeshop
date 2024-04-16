@@ -30,6 +30,9 @@ const productController = {
             "Not Found - Tài nguyên bạn muốn truy xuất không tồn tại hoặc đã bị xóa.",
         });
       }
+      if (!response[0]) {
+        res.status(404).json({ message: "Sản phẩm không tồn tại" });
+      }
       res.status(200).json(response[0]);
     });
   },
