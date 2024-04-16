@@ -1,7 +1,8 @@
 const db = require("../database/db");
 const commentController = {
   get: (req, res) => {
-    let sql = "SELECT * FROM comments WHERE product_id = ?";
+    let sql =
+      "SELECT comments.id,product_id,user_id,name,urlAvatar,content,comments.created_at FROM `comments` INNER JOIN users ON users.id = comments.user_id WHERE comments.product_id = ?";
     db.query(sql, req.params.id, (err, response) => {
       if (err) {
         res.status(404).json({
